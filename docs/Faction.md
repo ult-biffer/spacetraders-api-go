@@ -9,12 +9,13 @@ Name | Type | Description | Notes
 **Description** | **string** |  | 
 **Headquarters** | **string** |  | 
 **Traits** | [**[]FactionTrait**](FactionTrait.md) |  | 
+**IsRecruiting** | **bool** | Whether or not the faction is currently recruiting new agents. | 
 
 ## Methods
 
 ### NewFaction
 
-`func NewFaction(symbol string, name string, description string, headquarters string, traits []FactionTrait, ) *Faction`
+`func NewFaction(symbol string, name string, description string, headquarters string, traits []FactionTrait, isRecruiting bool, ) *Faction`
 
 NewFaction instantiates a new Faction object
 This constructor will assign default values to properties that have it defined,
@@ -127,6 +128,26 @@ and a boolean to check if the value has been set.
 `func (o *Faction) SetTraits(v []FactionTrait)`
 
 SetTraits sets Traits field to given value.
+
+
+### GetIsRecruiting
+
+`func (o *Faction) GetIsRecruiting() bool`
+
+GetIsRecruiting returns the IsRecruiting field if non-nil, zero value otherwise.
+
+### GetIsRecruitingOk
+
+`func (o *Faction) GetIsRecruitingOk() (*bool, bool)`
+
+GetIsRecruitingOk returns a tuple with the IsRecruiting field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetIsRecruiting
+
+`func (o *Faction) SetIsRecruiting(v bool)`
+
+SetIsRecruiting sets IsRecruiting field to given value.
 
 
 

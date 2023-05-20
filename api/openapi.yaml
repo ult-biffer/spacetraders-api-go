@@ -42,6 +42,19 @@ tags:
 - description: Agents
   name: agents
 paths:
+  /:
+    get:
+      description: Return the status of the game server.
+      operationId: get-status
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/get_status_200_response'
+          description: OK
+      summary: Get Status
+      tags: []
   /register:
     post:
       description: |-
@@ -1215,6 +1228,34 @@ paths:
       summary: Transfer Cargo
       tags:
       - fleet
+  /my/ships/{shipSymbol}/negotiate/contract:
+    post:
+      description: ""
+      operationId: negotiateContract
+      parameters:
+      - explode: false
+        in: path
+        name: shipSymbol
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Negotiate_Contract_200_Response'
+          description: Created
+      security:
+      - AgentToken: []
+      summary: Negotiate Contract
+      tags:
+      - fleet
 components:
   requestBodies: {}
   schemas:
@@ -1225,6 +1266,7 @@ components:
         symbol: symbol
         headquarters: headquarters
         credits: 0
+        startingFaction: startingFaction
       properties:
         accountId:
           minLength: 1
@@ -1240,10 +1282,15 @@ components:
           description: The number of credits the agent has available. Credits can
             be negative if funds have been overdrawn.
           type: integer
+        startingFaction:
+          description: The faction the agent started with.
+          minLength: 1
+          type: string
       required:
       - accountId
       - credits
       - headquarters
+      - startingFaction
       - symbol
       type: object
     Chart:
@@ -1322,6 +1369,7 @@ components:
         expiration: 2000-01-23T04:56:07.000+00:00
         id: id
         type: PROCUREMENT
+        deadlineToAccept: 2000-01-23T04:56:07.000+00:00
       properties:
         id:
           minLength: 1
@@ -1347,7 +1395,13 @@ components:
           description: Whether the contract has been fulfilled
           type: boolean
         expiration:
-          description: The time at which the contract expires
+          deprecated: true
+          description: Deprecated in favor of deadlineToAccept
+          format: date-time
+          type: string
+        deadlineToAccept:
+          description: The time at which the contract is no longer available to be
+            accepted
           format: date-time
           type: string
       required:
@@ -1457,10 +1511,8 @@ components:
         expiration:
           description: The date and time when the cooldown expires in ISO 8601 format
           format: date-time
-          minimum: 0
           type: string
       required:
-      - expiration
       - remainingSeconds
       - shipSymbol
       - totalSeconds
@@ -1501,6 +1553,7 @@ components:
     Faction:
       description: ""
       example:
+        isRecruiting: true
         symbol: symbol
         headquarters: headquarters
         traits:
@@ -1529,9 +1582,13 @@ components:
           items:
             $ref: '#/components/schemas/FactionTrait'
           type: array
+        isRecruiting:
+          description: Whether or not the faction is currently recruiting new agents.
+          type: boolean
       required:
       - description
       - headquarters
+      - isRecruiting
       - name
       - symbol
       - traits
@@ -3589,6 +3646,192 @@ components:
       - DEBRIS_FIELD
       - GRAVITY_WELL
       type: string
+    get_status_200_response_stats:
+      example:
+        ships: 6
+        systems: 1
+        waypoints: 5
+        agents: 0
+      properties:
+        agents:
+          type: integer
+        ships:
+          type: integer
+        systems:
+          type: integer
+        waypoints:
+          type: integer
+      required:
+      - agents
+      - ships
+      - systems
+      - waypoints
+      type: object
+    get_status_200_response_leaderboards_mostCredits_inner:
+      example:
+        credits: 5
+        agentSymbol: agentSymbol
+      properties:
+        agentSymbol:
+          type: string
+        credits:
+          type: integer
+      required:
+      - agentSymbol
+      - credits
+      type: object
+    get_status_200_response_leaderboards_mostSubmittedCharts_inner:
+      example:
+        chartCount: 2
+        agentSymbol: agentSymbol
+      properties:
+        agentSymbol:
+          type: string
+        chartCount:
+          type: integer
+      required:
+      - agentSymbol
+      - chartCount
+      type: object
+    get_status_200_response_leaderboards:
+      example:
+        mostCredits:
+        - credits: 5
+          agentSymbol: agentSymbol
+        - credits: 5
+          agentSymbol: agentSymbol
+        mostSubmittedCharts:
+        - chartCount: 2
+          agentSymbol: agentSymbol
+        - chartCount: 2
+          agentSymbol: agentSymbol
+      properties:
+        mostCredits:
+          items:
+            $ref: '#/components/schemas/get_status_200_response_leaderboards_mostCredits_inner'
+          type: array
+        mostSubmittedCharts:
+          items:
+            $ref: '#/components/schemas/get_status_200_response_leaderboards_mostSubmittedCharts_inner'
+          type: array
+      required:
+      - mostCredits
+      - mostSubmittedCharts
+      type: object
+    get_status_200_response_serverResets:
+      example:
+        next: next
+        frequency: frequency
+      properties:
+        next:
+          description: The date and time when the game server will reset.
+          type: string
+        frequency:
+          description: How often we intend to reset the game server.
+          type: string
+      required:
+      - frequency
+      - next
+      type: object
+    get_status_200_response_announcements_inner:
+      example:
+        title: title
+        body: body
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+      required:
+      - body
+      - title
+      type: object
+    get_status_200_response_links_inner:
+      example:
+        name: name
+        url: url
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+      required:
+      - name
+      - url
+      type: object
+    get_status_200_response:
+      description: OK
+      example:
+        serverResets:
+          next: next
+          frequency: frequency
+        resetDate: resetDate
+        stats:
+          ships: 6
+          systems: 1
+          waypoints: 5
+          agents: 0
+        description: description
+        links:
+        - name: name
+          url: url
+        - name: name
+          url: url
+        leaderboards:
+          mostCredits:
+          - credits: 5
+            agentSymbol: agentSymbol
+          - credits: 5
+            agentSymbol: agentSymbol
+          mostSubmittedCharts:
+          - chartCount: 2
+            agentSymbol: agentSymbol
+          - chartCount: 2
+            agentSymbol: agentSymbol
+        version: version
+        announcements:
+        - title: title
+          body: body
+        - title: title
+          body: body
+        status: status
+      properties:
+        status:
+          description: The current status of the game server.
+          type: string
+        version:
+          description: The current version of the API.
+          type: string
+        resetDate:
+          description: The date and time when the game server was last reset.
+          type: string
+        description:
+          type: string
+        stats:
+          $ref: '#/components/schemas/get_status_200_response_stats'
+        leaderboards:
+          $ref: '#/components/schemas/get_status_200_response_leaderboards'
+        serverResets:
+          $ref: '#/components/schemas/get_status_200_response_serverResets'
+        announcements:
+          items:
+            $ref: '#/components/schemas/get_status_200_response_announcements_inner'
+          type: array
+        links:
+          items:
+            $ref: '#/components/schemas/get_status_200_response_links_inner'
+          type: array
+      required:
+      - announcements
+      - description
+      - leaderboards
+      - links
+      - resetDate
+      - serverResets
+      - stats
+      - status
+      - version
+      type: object
     register_request:
       properties:
         faction:
@@ -3621,6 +3864,7 @@ components:
           symbol: symbol
           headquarters: headquarters
           credits: 0
+          startingFaction: startingFaction
         contract:
           terms:
             deliver:
@@ -3642,7 +3886,9 @@ components:
           expiration: 2000-01-23T04:56:07.000+00:00
           id: id
           type: PROCUREMENT
+          deadlineToAccept: 2000-01-23T04:56:07.000+00:00
         faction:
+          isRecruiting: true
           symbol: symbol
           headquarters: headquarters
           traits:
@@ -3807,6 +4053,7 @@ components:
             symbol: symbol
             headquarters: headquarters
             credits: 0
+            startingFaction: startingFaction
           contract:
             terms:
               deliver:
@@ -3828,7 +4075,9 @@ components:
             expiration: 2000-01-23T04:56:07.000+00:00
             id: id
             type: PROCUREMENT
+            deadlineToAccept: 2000-01-23T04:56:07.000+00:00
           faction:
+            isRecruiting: true
             symbol: symbol
             headquarters: headquarters
             traits:
@@ -4415,7 +4664,8 @@ components:
     get_factions_200_response:
       example:
         data:
-        - symbol: symbol
+        - isRecruiting: true
+          symbol: symbol
           headquarters: headquarters
           traits:
           - symbol: BUREAUCRATIC
@@ -4426,7 +4676,8 @@ components:
             description: description
           name: name
           description: description
-        - symbol: symbol
+        - isRecruiting: true
+          symbol: symbol
           headquarters: headquarters
           traits:
           - symbol: BUREAUCRATIC
@@ -4455,6 +4706,7 @@ components:
     get_faction_200_response:
       example:
         data:
+          isRecruiting: true
           symbol: symbol
           headquarters: headquarters
           traits:
@@ -4479,6 +4731,7 @@ components:
           symbol: symbol
           headquarters: headquarters
           credits: 0
+          startingFaction: startingFaction
       properties:
         data:
           $ref: '#/components/schemas/Agent'
@@ -4509,6 +4762,7 @@ components:
           expiration: 2000-01-23T04:56:07.000+00:00
           id: id
           type: PROCUREMENT
+          deadlineToAccept: 2000-01-23T04:56:07.000+00:00
         - terms:
             deliver:
             - tradeSymbol: tradeSymbol
@@ -4529,6 +4783,7 @@ components:
           expiration: 2000-01-23T04:56:07.000+00:00
           id: id
           type: PROCUREMENT
+          deadlineToAccept: 2000-01-23T04:56:07.000+00:00
         meta:
           total: 5
           limit: 7
@@ -4567,6 +4822,7 @@ components:
           expiration: 2000-01-23T04:56:07.000+00:00
           id: id
           type: PROCUREMENT
+          deadlineToAccept: 2000-01-23T04:56:07.000+00:00
       properties:
         data:
           $ref: '#/components/schemas/Contract'
@@ -4580,6 +4836,7 @@ components:
           symbol: symbol
           headquarters: headquarters
           credits: 0
+          startingFaction: startingFaction
         contract:
           terms:
             deliver:
@@ -4601,6 +4858,7 @@ components:
           expiration: 2000-01-23T04:56:07.000+00:00
           id: id
           type: PROCUREMENT
+          deadlineToAccept: 2000-01-23T04:56:07.000+00:00
       properties:
         agent:
           $ref: '#/components/schemas/Agent'
@@ -4618,6 +4876,7 @@ components:
             symbol: symbol
             headquarters: headquarters
             credits: 0
+            startingFaction: startingFaction
           contract:
             terms:
               deliver:
@@ -4639,6 +4898,7 @@ components:
             expiration: 2000-01-23T04:56:07.000+00:00
             id: id
             type: PROCUREMENT
+            deadlineToAccept: 2000-01-23T04:56:07.000+00:00
       properties:
         data:
           $ref: '#/components/schemas/accept_contract_200_response_data'
@@ -4681,6 +4941,7 @@ components:
           expiration: 2000-01-23T04:56:07.000+00:00
           id: id
           type: PROCUREMENT
+          deadlineToAccept: 2000-01-23T04:56:07.000+00:00
         cargo:
           units: 0
           inventory:
@@ -4727,6 +4988,7 @@ components:
             expiration: 2000-01-23T04:56:07.000+00:00
             id: id
             type: PROCUREMENT
+            deadlineToAccept: 2000-01-23T04:56:07.000+00:00
           cargo:
             units: 0
             inventory:
@@ -4754,6 +5016,7 @@ components:
             symbol: symbol
             headquarters: headquarters
             credits: 0
+            startingFaction: startingFaction
           contract:
             terms:
               deliver:
@@ -4775,6 +5038,7 @@ components:
             expiration: 2000-01-23T04:56:07.000+00:00
             id: id
             type: PROCUREMENT
+            deadlineToAccept: 2000-01-23T04:56:07.000+00:00
       properties:
         data:
           $ref: '#/components/schemas/accept_contract_200_response_data'
@@ -5066,6 +5330,7 @@ components:
           symbol: symbol
           headquarters: headquarters
           credits: 0
+          startingFaction: startingFaction
         ship:
           symbol: symbol
           nav:
@@ -5218,6 +5483,7 @@ components:
             symbol: symbol
             headquarters: headquarters
             credits: 0
+            startingFaction: startingFaction
           ship:
             symbol: symbol
             nav:
@@ -6202,6 +6468,7 @@ components:
           symbol: symbol
           headquarters: headquarters
           credits: 0
+          startingFaction: startingFaction
         cargo:
           units: 0
           inventory:
@@ -6244,6 +6511,7 @@ components:
             symbol: symbol
             headquarters: headquarters
             credits: 0
+            startingFaction: startingFaction
           cargo:
             units: 0
             inventory:
@@ -6628,20 +6896,33 @@ components:
           symbol: symbol
           headquarters: headquarters
           credits: 0
+          startingFaction: startingFaction
         fuel:
           consumed:
             amount: 0
             timestamp: 2000-01-23T04:56:07.000+00:00
           current: 0
           capacity: 0
+        transaction:
+          tradeSymbol: tradeSymbol
+          totalPrice: 1
+          waypointSymbol: waypointSymbol
+          shipSymbol: shipSymbol
+          units: 1
+          type: PURCHASE
+          pricePerUnit: 1
+          timestamp: 2000-01-23T04:56:07.000+00:00
       properties:
         agent:
           $ref: '#/components/schemas/Agent'
         fuel:
           $ref: '#/components/schemas/ShipFuel'
+        transaction:
+          $ref: '#/components/schemas/MarketTransaction'
       required:
       - agent
       - fuel
+      - transaction
       type: object
     refuel_ship_200_response:
       description: ""
@@ -6652,12 +6933,22 @@ components:
             symbol: symbol
             headquarters: headquarters
             credits: 0
+            startingFaction: startingFaction
           fuel:
             consumed:
               amount: 0
               timestamp: 2000-01-23T04:56:07.000+00:00
             current: 0
             capacity: 0
+          transaction:
+            tradeSymbol: tradeSymbol
+            totalPrice: 1
+            waypointSymbol: waypointSymbol
+            shipSymbol: shipSymbol
+            units: 1
+            type: PURCHASE
+            pricePerUnit: 1
+            timestamp: 2000-01-23T04:56:07.000+00:00
       properties:
         data:
           $ref: '#/components/schemas/refuel_ship_200_response_data'
@@ -6684,6 +6975,7 @@ components:
             symbol: symbol
             headquarters: headquarters
             credits: 0
+            startingFaction: startingFaction
           cargo:
             units: 0
             inventory:
@@ -6748,6 +7040,69 @@ components:
       required:
       - data
       title: Transfer Cargo 200 Response
+      type: object
+    Negotiate_Contract_200_Response_data:
+      example:
+        contract:
+          terms:
+            deliver:
+            - tradeSymbol: tradeSymbol
+              unitsRequired: 5
+              destinationSymbol: destinationSymbol
+              unitsFulfilled: 5
+            - tradeSymbol: tradeSymbol
+              unitsRequired: 5
+              destinationSymbol: destinationSymbol
+              unitsFulfilled: 5
+            payment:
+              onFulfilled: 1
+              onAccepted: 6
+            deadline: 2000-01-23T04:56:07.000+00:00
+          factionSymbol: factionSymbol
+          fulfilled: false
+          accepted: false
+          expiration: 2000-01-23T04:56:07.000+00:00
+          id: id
+          type: PROCUREMENT
+          deadlineToAccept: 2000-01-23T04:56:07.000+00:00
+      properties:
+        contract:
+          $ref: '#/components/schemas/Contract'
+      required:
+      - contract
+      type: object
+    Negotiate_Contract_200_Response:
+      description: ""
+      example:
+        data:
+          contract:
+            terms:
+              deliver:
+              - tradeSymbol: tradeSymbol
+                unitsRequired: 5
+                destinationSymbol: destinationSymbol
+                unitsFulfilled: 5
+              - tradeSymbol: tradeSymbol
+                unitsRequired: 5
+                destinationSymbol: destinationSymbol
+                unitsFulfilled: 5
+              payment:
+                onFulfilled: 1
+                onAccepted: 6
+              deadline: 2000-01-23T04:56:07.000+00:00
+            factionSymbol: factionSymbol
+            fulfilled: false
+            accepted: false
+            expiration: 2000-01-23T04:56:07.000+00:00
+            id: id
+            type: PROCUREMENT
+            deadlineToAccept: 2000-01-23T04:56:07.000+00:00
+      properties:
+        data:
+          $ref: '#/components/schemas/Negotiate_Contract_200_Response_data'
+      required:
+      - data
+      title: Negotiate Contract 200 Response
       type: object
     ScannedShip_frame:
       description: The frame of the ship.

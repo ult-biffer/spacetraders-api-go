@@ -6,12 +6,13 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Agent** | [**Agent**](Agent.md) |  | 
 **Fuel** | [**ShipFuel**](ShipFuel.md) |  | 
+**Transaction** | [**MarketTransaction**](MarketTransaction.md) |  | 
 
 ## Methods
 
 ### NewRefuelShip200ResponseData
 
-`func NewRefuelShip200ResponseData(agent Agent, fuel ShipFuel, ) *RefuelShip200ResponseData`
+`func NewRefuelShip200ResponseData(agent Agent, fuel ShipFuel, transaction MarketTransaction, ) *RefuelShip200ResponseData`
 
 NewRefuelShip200ResponseData instantiates a new RefuelShip200ResponseData object
 This constructor will assign default values to properties that have it defined,
@@ -64,6 +65,26 @@ and a boolean to check if the value has been set.
 `func (o *RefuelShip200ResponseData) SetFuel(v ShipFuel)`
 
 SetFuel sets Fuel field to given value.
+
+
+### GetTransaction
+
+`func (o *RefuelShip200ResponseData) GetTransaction() MarketTransaction`
+
+GetTransaction returns the Transaction field if non-nil, zero value otherwise.
+
+### GetTransactionOk
+
+`func (o *RefuelShip200ResponseData) GetTransactionOk() (*MarketTransaction, bool)`
+
+GetTransactionOk returns a tuple with the Transaction field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTransaction
+
+`func (o *RefuelShip200ResponseData) SetTransaction(v MarketTransaction)`
+
+SetTransaction sets Transaction field to given value.
 
 
 

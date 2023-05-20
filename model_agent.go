@@ -26,18 +26,21 @@ type Agent struct {
 	Headquarters string `json:"headquarters"`
 	// The number of credits the agent has available. Credits can be negative if funds have been overdrawn.
 	Credits int32 `json:"credits"`
+	// The faction the agent started with.
+	StartingFaction string `json:"startingFaction"`
 }
 
 // NewAgent instantiates a new Agent object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAgent(accountId string, symbol string, headquarters string, credits int32) *Agent {
+func NewAgent(accountId string, symbol string, headquarters string, credits int32, startingFaction string) *Agent {
 	this := Agent{}
 	this.AccountId = accountId
 	this.Symbol = symbol
 	this.Headquarters = headquarters
 	this.Credits = credits
+	this.StartingFaction = startingFaction
 	return &this
 }
 
@@ -145,6 +148,30 @@ func (o *Agent) SetCredits(v int32) {
 	o.Credits = v
 }
 
+// GetStartingFaction returns the StartingFaction field value
+func (o *Agent) GetStartingFaction() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.StartingFaction
+}
+
+// GetStartingFactionOk returns a tuple with the StartingFaction field value
+// and a boolean to check if the value has been set.
+func (o *Agent) GetStartingFactionOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.StartingFaction, true
+}
+
+// SetStartingFaction sets field value
+func (o *Agent) SetStartingFaction(v string) {
+	o.StartingFaction = v
+}
+
 func (o Agent) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -159,6 +186,7 @@ func (o Agent) ToMap() (map[string]interface{}, error) {
 	toSerialize["symbol"] = o.Symbol
 	toSerialize["headquarters"] = o.Headquarters
 	toSerialize["credits"] = o.Credits
+	toSerialize["startingFaction"] = o.StartingFaction
 	return toSerialize, nil
 }
 

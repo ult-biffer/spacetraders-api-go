@@ -22,16 +22,18 @@ var _ MappedNullable = &RefuelShip200ResponseData{}
 type RefuelShip200ResponseData struct {
 	Agent Agent `json:"agent"`
 	Fuel ShipFuel `json:"fuel"`
+	Transaction MarketTransaction `json:"transaction"`
 }
 
 // NewRefuelShip200ResponseData instantiates a new RefuelShip200ResponseData object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRefuelShip200ResponseData(agent Agent, fuel ShipFuel) *RefuelShip200ResponseData {
+func NewRefuelShip200ResponseData(agent Agent, fuel ShipFuel, transaction MarketTransaction) *RefuelShip200ResponseData {
 	this := RefuelShip200ResponseData{}
 	this.Agent = agent
 	this.Fuel = fuel
+	this.Transaction = transaction
 	return &this
 }
 
@@ -91,6 +93,30 @@ func (o *RefuelShip200ResponseData) SetFuel(v ShipFuel) {
 	o.Fuel = v
 }
 
+// GetTransaction returns the Transaction field value
+func (o *RefuelShip200ResponseData) GetTransaction() MarketTransaction {
+	if o == nil {
+		var ret MarketTransaction
+		return ret
+	}
+
+	return o.Transaction
+}
+
+// GetTransactionOk returns a tuple with the Transaction field value
+// and a boolean to check if the value has been set.
+func (o *RefuelShip200ResponseData) GetTransactionOk() (*MarketTransaction, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Transaction, true
+}
+
+// SetTransaction sets field value
+func (o *RefuelShip200ResponseData) SetTransaction(v MarketTransaction) {
+	o.Transaction = v
+}
+
 func (o RefuelShip200ResponseData) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -103,6 +129,7 @@ func (o RefuelShip200ResponseData) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["agent"] = o.Agent
 	toSerialize["fuel"] = o.Fuel
+	toSerialize["transaction"] = o.Transaction
 	return toSerialize, nil
 }
 

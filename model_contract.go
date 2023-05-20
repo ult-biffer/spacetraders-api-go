@@ -30,8 +30,11 @@ type Contract struct {
 	Accepted bool `json:"accepted"`
 	// Whether the contract has been fulfilled
 	Fulfilled bool `json:"fulfilled"`
-	// The time at which the contract expires
+	// Deprecated in favor of deadlineToAccept
+	// Deprecated
 	Expiration time.Time `json:"expiration"`
+	// The time at which the contract is no longer available to be accepted
+	DeadlineToAccept *time.Time `json:"deadlineToAccept,omitempty"`
 }
 
 // NewContract instantiates a new Contract object
@@ -207,6 +210,7 @@ func (o *Contract) SetFulfilled(v bool) {
 }
 
 // GetExpiration returns the Expiration field value
+// Deprecated
 func (o *Contract) GetExpiration() time.Time {
 	if o == nil {
 		var ret time.Time
@@ -218,6 +222,7 @@ func (o *Contract) GetExpiration() time.Time {
 
 // GetExpirationOk returns a tuple with the Expiration field value
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *Contract) GetExpirationOk() (*time.Time, bool) {
 	if o == nil {
 		return nil, false
@@ -226,8 +231,41 @@ func (o *Contract) GetExpirationOk() (*time.Time, bool) {
 }
 
 // SetExpiration sets field value
+// Deprecated
 func (o *Contract) SetExpiration(v time.Time) {
 	o.Expiration = v
+}
+
+// GetDeadlineToAccept returns the DeadlineToAccept field value if set, zero value otherwise.
+func (o *Contract) GetDeadlineToAccept() time.Time {
+	if o == nil || IsNil(o.DeadlineToAccept) {
+		var ret time.Time
+		return ret
+	}
+	return *o.DeadlineToAccept
+}
+
+// GetDeadlineToAcceptOk returns a tuple with the DeadlineToAccept field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Contract) GetDeadlineToAcceptOk() (*time.Time, bool) {
+	if o == nil || IsNil(o.DeadlineToAccept) {
+		return nil, false
+	}
+	return o.DeadlineToAccept, true
+}
+
+// HasDeadlineToAccept returns a boolean if a field has been set.
+func (o *Contract) HasDeadlineToAccept() bool {
+	if o != nil && !IsNil(o.DeadlineToAccept) {
+		return true
+	}
+
+	return false
+}
+
+// SetDeadlineToAccept gets a reference to the given time.Time and assigns it to the DeadlineToAccept field.
+func (o *Contract) SetDeadlineToAccept(v time.Time) {
+	o.DeadlineToAccept = &v
 }
 
 func (o Contract) MarshalJSON() ([]byte, error) {
@@ -247,6 +285,9 @@ func (o Contract) ToMap() (map[string]interface{}, error) {
 	toSerialize["accepted"] = o.Accepted
 	toSerialize["fulfilled"] = o.Fulfilled
 	toSerialize["expiration"] = o.Expiration
+	if !IsNil(o.DeadlineToAccept) {
+		toSerialize["deadlineToAccept"] = o.DeadlineToAccept
+	}
 	return toSerialize, nil
 }
 

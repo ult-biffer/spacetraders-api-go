@@ -19,6 +19,7 @@ Method | HTTP request | Description
 [**Jettison**](FleetApi.md#Jettison) | **Post** /my/ships/{shipSymbol}/jettison | Jettison Cargo
 [**JumpShip**](FleetApi.md#JumpShip) | **Post** /my/ships/{shipSymbol}/jump | Jump Ship
 [**NavigateShip**](FleetApi.md#NavigateShip) | **Post** /my/ships/{shipSymbol}/navigate | Navigate Ship
+[**NegotiateContract**](FleetApi.md#NegotiateContract) | **Post** /my/ships/{shipSymbol}/negotiate/contract | Negotiate Contract
 [**OrbitShip**](FleetApi.md#OrbitShip) | **Post** /my/ships/{shipSymbol}/orbit | Orbit Ship
 [**PatchShipNav**](FleetApi.md#PatchShipNav) | **Patch** /my/ships/{shipSymbol}/nav | Patch Ship Nav
 [**PurchaseCargo**](FleetApi.md#PurchaseCargo) | **Post** /my/ships/{shipSymbol}/purchase | Purchase Cargo
@@ -1072,6 +1073,78 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**NavigateShip200Response**](NavigateShip200Response.md)
+
+### Authorization
+
+[AgentToken](../README.md#AgentToken)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## NegotiateContract
+
+> NegotiateContract200Response NegotiateContract(ctx, shipSymbol).Body(body).Execute()
+
+Negotiate Contract
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/ult-biffer/spacetraders-api-go"
+)
+
+func main() {
+    shipSymbol := "shipSymbol_example" // string | 
+    body := interface{}(987) // interface{} |  (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.FleetApi.NegotiateContract(context.Background(), shipSymbol).Body(body).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `FleetApi.NegotiateContract``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `NegotiateContract`: NegotiateContract200Response
+    fmt.Fprintf(os.Stdout, "Response from `FleetApi.NegotiateContract`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**shipSymbol** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiNegotiateContractRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **body** | **interface{}** |  | 
+
+### Return type
+
+[**NegotiateContract200Response**](NegotiateContract200Response.md)
 
 ### Authorization
 

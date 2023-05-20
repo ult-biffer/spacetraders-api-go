@@ -28,19 +28,18 @@ type Cooldown struct {
 	// The remaining duration of the cooldown in seconds
 	RemainingSeconds int32 `json:"remainingSeconds"`
 	// The date and time when the cooldown expires in ISO 8601 format
-	Expiration time.Time `json:"expiration"`
+	Expiration *time.Time `json:"expiration,omitempty"`
 }
 
 // NewCooldown instantiates a new Cooldown object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCooldown(shipSymbol string, totalSeconds int32, remainingSeconds int32, expiration time.Time) *Cooldown {
+func NewCooldown(shipSymbol string, totalSeconds int32, remainingSeconds int32) *Cooldown {
 	this := Cooldown{}
 	this.ShipSymbol = shipSymbol
 	this.TotalSeconds = totalSeconds
 	this.RemainingSeconds = remainingSeconds
-	this.Expiration = expiration
 	return &this
 }
 
@@ -124,28 +123,36 @@ func (o *Cooldown) SetRemainingSeconds(v int32) {
 	o.RemainingSeconds = v
 }
 
-// GetExpiration returns the Expiration field value
+// GetExpiration returns the Expiration field value if set, zero value otherwise.
 func (o *Cooldown) GetExpiration() time.Time {
-	if o == nil {
+	if o == nil || IsNil(o.Expiration) {
 		var ret time.Time
 		return ret
 	}
-
-	return o.Expiration
+	return *o.Expiration
 }
 
-// GetExpirationOk returns a tuple with the Expiration field value
+// GetExpirationOk returns a tuple with the Expiration field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Cooldown) GetExpirationOk() (*time.Time, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Expiration) {
 		return nil, false
 	}
-	return &o.Expiration, true
+	return o.Expiration, true
 }
 
-// SetExpiration sets field value
+// HasExpiration returns a boolean if a field has been set.
+func (o *Cooldown) HasExpiration() bool {
+	if o != nil && !IsNil(o.Expiration) {
+		return true
+	}
+
+	return false
+}
+
+// SetExpiration gets a reference to the given time.Time and assigns it to the Expiration field.
 func (o *Cooldown) SetExpiration(v time.Time) {
-	o.Expiration = v
+	o.Expiration = &v
 }
 
 func (o Cooldown) MarshalJSON() ([]byte, error) {
@@ -161,7 +168,9 @@ func (o Cooldown) ToMap() (map[string]interface{}, error) {
 	toSerialize["shipSymbol"] = o.ShipSymbol
 	toSerialize["totalSeconds"] = o.TotalSeconds
 	toSerialize["remainingSeconds"] = o.RemainingSeconds
-	toSerialize["expiration"] = o.Expiration
+	if !IsNil(o.Expiration) {
+		toSerialize["expiration"] = o.Expiration
+	}
 	return toSerialize, nil
 }
 

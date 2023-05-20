@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 .travis.yml
 README.md
 api/openapi.yaml
@@ -61,6 +60,14 @@ docs/GetMyShips200Response.md
 docs/GetShipCooldown200Response.md
 docs/GetShipNav200Response.md
 docs/GetShipyard200Response.md
+docs/GetStatus200Response.md
+docs/GetStatus200ResponseAnnouncementsInner.md
+docs/GetStatus200ResponseLeaderboards.md
+docs/GetStatus200ResponseLeaderboardsMostCreditsInner.md
+docs/GetStatus200ResponseLeaderboardsMostSubmittedChartsInner.md
+docs/GetStatus200ResponseLinksInner.md
+docs/GetStatus200ResponseServerResets.md
+docs/GetStatus200ResponseStats.md
 docs/GetSystem200Response.md
 docs/GetSystemWaypoints200Response.md
 docs/GetSystems200Response.md
@@ -79,6 +86,8 @@ docs/Meta.md
 docs/NavigateShip200Response.md
 docs/NavigateShip200ResponseData.md
 docs/NavigateShipRequest.md
+docs/NegotiateContract200Response.md
+docs/NegotiateContract200ResponseData.md
 docs/OrbitShip200Response.md
 docs/OrbitShip200ResponseData.md
 docs/PatchShipNavRequest.md
@@ -194,6 +203,14 @@ model_get_my_ships_200_response.go
 model_get_ship_cooldown_200_response.go
 model_get_ship_nav_200_response.go
 model_get_shipyard_200_response.go
+model_get_status_200_response.go
+model_get_status_200_response_announcements_inner.go
+model_get_status_200_response_leaderboards.go
+model_get_status_200_response_leaderboards_most_credits_inner.go
+model_get_status_200_response_leaderboards_most_submitted_charts_inner.go
+model_get_status_200_response_links_inner.go
+model_get_status_200_response_server_resets.go
+model_get_status_200_response_stats.go
 model_get_system_200_response.go
 model_get_system_waypoints_200_response.go
 model_get_systems_200_response.go
@@ -212,6 +229,8 @@ model_meta.go
 model_navigate_ship_200_response.go
 model_navigate_ship_200_response_data.go
 model_navigate_ship_request.go
+model_negotiate_contract_200_response.go
+model_negotiate_contract_200_response_data.go
 model_orbit_ship_200_response.go
 model_orbit_ship_200_response_data.go
 model_patch_ship_nav_request.go

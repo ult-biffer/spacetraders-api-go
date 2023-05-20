@@ -264,6 +264,21 @@ To travel between systems, see the ship's warp or jump actions.
 	NavigateShipExecute(r ApiNavigateShipRequest) (*NavigateShip200Response, *http.Response, error)
 
 	/*
+	NegotiateContract Negotiate Contract
+
+	
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param shipSymbol
+	@return ApiNegotiateContractRequest
+	*/
+	NegotiateContract(ctx context.Context, shipSymbol string) ApiNegotiateContractRequest
+
+	// NegotiateContractExecute executes the request
+	//  @return NegotiateContract200Response
+	NegotiateContractExecute(r ApiNegotiateContractRequest) (*NegotiateContract200Response, *http.Response, error)
+
+	/*
 	OrbitShip Orbit Ship
 
 	Attempt to move your ship into orbit at it's current location. The request will only succeed if your ship is capable of moving into orbit at the time of the request.
@@ -1978,6 +1993,117 @@ func (a *FleetApiService) NavigateShipExecute(r ApiNavigateShipRequest) (*Naviga
 	}
 	// body params
 	localVarPostBody = r.navigateShipRequest
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiNegotiateContractRequest struct {
+	ctx context.Context
+	ApiService FleetApi
+	shipSymbol string
+	body *interface{}
+}
+
+func (r ApiNegotiateContractRequest) Body(body interface{}) ApiNegotiateContractRequest {
+	r.body = &body
+	return r
+}
+
+func (r ApiNegotiateContractRequest) Execute() (*NegotiateContract200Response, *http.Response, error) {
+	return r.ApiService.NegotiateContractExecute(r)
+}
+
+/*
+NegotiateContract Negotiate Contract
+
+
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param shipSymbol
+ @return ApiNegotiateContractRequest
+*/
+func (a *FleetApiService) NegotiateContract(ctx context.Context, shipSymbol string) ApiNegotiateContractRequest {
+	return ApiNegotiateContractRequest{
+		ApiService: a,
+		ctx: ctx,
+		shipSymbol: shipSymbol,
+	}
+}
+
+// Execute executes the request
+//  @return NegotiateContract200Response
+func (a *FleetApiService) NegotiateContractExecute(r ApiNegotiateContractRequest) (*NegotiateContract200Response, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodPost
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *NegotiateContract200Response
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FleetApiService.NegotiateContract")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/my/ships/{shipSymbol}/negotiate/contract"
+	localVarPath = strings.Replace(localVarPath, "{"+"shipSymbol"+"}", url.PathEscape(parameterValueToString(r.shipSymbol, "shipSymbol")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.body
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

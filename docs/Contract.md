@@ -10,7 +10,8 @@ Name | Type | Description | Notes
 **Terms** | [**ContractTerms**](ContractTerms.md) |  | 
 **Accepted** | **bool** | Whether the contract has been accepted by the agent | [default to false]
 **Fulfilled** | **bool** | Whether the contract has been fulfilled | [default to false]
-**Expiration** | **time.Time** | The time at which the contract expires | 
+**Expiration** | **time.Time** | Deprecated in favor of deadlineToAccept | 
+**DeadlineToAccept** | Pointer to **time.Time** | The time at which the contract is no longer available to be accepted | [optional] 
 
 ## Methods
 
@@ -170,6 +171,31 @@ and a boolean to check if the value has been set.
 
 SetExpiration sets Expiration field to given value.
 
+
+### GetDeadlineToAccept
+
+`func (o *Contract) GetDeadlineToAccept() time.Time`
+
+GetDeadlineToAccept returns the DeadlineToAccept field if non-nil, zero value otherwise.
+
+### GetDeadlineToAcceptOk
+
+`func (o *Contract) GetDeadlineToAcceptOk() (*time.Time, bool)`
+
+GetDeadlineToAcceptOk returns a tuple with the DeadlineToAccept field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDeadlineToAccept
+
+`func (o *Contract) SetDeadlineToAccept(v time.Time)`
+
+SetDeadlineToAccept sets DeadlineToAccept field to given value.
+
+### HasDeadlineToAccept
+
+`func (o *Contract) HasDeadlineToAccept() bool`
+
+HasDeadlineToAccept returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

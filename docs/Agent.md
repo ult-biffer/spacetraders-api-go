@@ -8,12 +8,13 @@ Name | Type | Description | Notes
 **Symbol** | **string** |  | 
 **Headquarters** | **string** | The headquarters of the agent. | 
 **Credits** | **int32** | The number of credits the agent has available. Credits can be negative if funds have been overdrawn. | 
+**StartingFaction** | **string** | The faction the agent started with. | 
 
 ## Methods
 
 ### NewAgent
 
-`func NewAgent(accountId string, symbol string, headquarters string, credits int32, ) *Agent`
+`func NewAgent(accountId string, symbol string, headquarters string, credits int32, startingFaction string, ) *Agent`
 
 NewAgent instantiates a new Agent object
 This constructor will assign default values to properties that have it defined,
@@ -106,6 +107,26 @@ and a boolean to check if the value has been set.
 `func (o *Agent) SetCredits(v int32)`
 
 SetCredits sets Credits field to given value.
+
+
+### GetStartingFaction
+
+`func (o *Agent) GetStartingFaction() string`
+
+GetStartingFaction returns the StartingFaction field if non-nil, zero value otherwise.
+
+### GetStartingFactionOk
+
+`func (o *Agent) GetStartingFactionOk() (*string, bool)`
+
+GetStartingFactionOk returns a tuple with the StartingFaction field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetStartingFaction
+
+`func (o *Agent) SetStartingFaction(v string)`
+
+SetStartingFaction sets StartingFaction field to given value.
 
 
 

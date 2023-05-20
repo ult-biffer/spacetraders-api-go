@@ -25,19 +25,22 @@ type Faction struct {
 	Description string `json:"description"`
 	Headquarters string `json:"headquarters"`
 	Traits []FactionTrait `json:"traits"`
+	// Whether or not the faction is currently recruiting new agents.
+	IsRecruiting bool `json:"isRecruiting"`
 }
 
 // NewFaction instantiates a new Faction object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewFaction(symbol string, name string, description string, headquarters string, traits []FactionTrait) *Faction {
+func NewFaction(symbol string, name string, description string, headquarters string, traits []FactionTrait, isRecruiting bool) *Faction {
 	this := Faction{}
 	this.Symbol = symbol
 	this.Name = name
 	this.Description = description
 	this.Headquarters = headquarters
 	this.Traits = traits
+	this.IsRecruiting = isRecruiting
 	return &this
 }
 
@@ -169,6 +172,30 @@ func (o *Faction) SetTraits(v []FactionTrait) {
 	o.Traits = v
 }
 
+// GetIsRecruiting returns the IsRecruiting field value
+func (o *Faction) GetIsRecruiting() bool {
+	if o == nil {
+		var ret bool
+		return ret
+	}
+
+	return o.IsRecruiting
+}
+
+// GetIsRecruitingOk returns a tuple with the IsRecruiting field value
+// and a boolean to check if the value has been set.
+func (o *Faction) GetIsRecruitingOk() (*bool, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.IsRecruiting, true
+}
+
+// SetIsRecruiting sets field value
+func (o *Faction) SetIsRecruiting(v bool) {
+	o.IsRecruiting = v
+}
+
 func (o Faction) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -184,6 +211,7 @@ func (o Faction) ToMap() (map[string]interface{}, error) {
 	toSerialize["description"] = o.Description
 	toSerialize["headquarters"] = o.Headquarters
 	toSerialize["traits"] = o.Traits
+	toSerialize["isRecruiting"] = o.IsRecruiting
 	return toSerialize, nil
 }
 

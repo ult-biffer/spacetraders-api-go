@@ -7,13 +7,13 @@ Name | Type | Description | Notes
 **ShipSymbol** | **string** | The symbol of the ship that is on cooldown | 
 **TotalSeconds** | **int32** | The total duration of the cooldown in seconds | 
 **RemainingSeconds** | **int32** | The remaining duration of the cooldown in seconds | 
-**Expiration** | **time.Time** | The date and time when the cooldown expires in ISO 8601 format | 
+**Expiration** | Pointer to **time.Time** | The date and time when the cooldown expires in ISO 8601 format | [optional] 
 
 ## Methods
 
 ### NewCooldown
 
-`func NewCooldown(shipSymbol string, totalSeconds int32, remainingSeconds int32, expiration time.Time, ) *Cooldown`
+`func NewCooldown(shipSymbol string, totalSeconds int32, remainingSeconds int32, ) *Cooldown`
 
 NewCooldown instantiates a new Cooldown object
 This constructor will assign default values to properties that have it defined,
@@ -107,6 +107,11 @@ and a boolean to check if the value has been set.
 
 SetExpiration sets Expiration field to given value.
 
+### HasExpiration
+
+`func (o *Cooldown) HasExpiration() bool`
+
+HasExpiration returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

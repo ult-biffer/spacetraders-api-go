@@ -99,6 +99,7 @@ Class | Method | HTTP request | Description
 *ContractsApi* | [**FulfillContract**](docs/ContractsApi.md#fulfillcontract) | **Post** /my/contracts/{contractId}/fulfill | Fulfill Contract
 *ContractsApi* | [**GetContract**](docs/ContractsApi.md#getcontract) | **Get** /my/contracts/{contractId} | Get Contract
 *ContractsApi* | [**GetContracts**](docs/ContractsApi.md#getcontracts) | **Get** /my/contracts | List Contracts
+*DefaultApi* | [**GetStatus**](docs/DefaultApi.md#getstatus) | **Get** / | Get Status
 *DefaultApi* | [**Register**](docs/DefaultApi.md#register) | **Post** /register | Register New Agent
 *FactionsApi* | [**GetFaction**](docs/FactionsApi.md#getfaction) | **Get** /factions/{factionSymbol} | Get Faction
 *FactionsApi* | [**GetFactions**](docs/FactionsApi.md#getfactions) | **Get** /factions | List Factions
@@ -117,6 +118,7 @@ Class | Method | HTTP request | Description
 *FleetApi* | [**Jettison**](docs/FleetApi.md#jettison) | **Post** /my/ships/{shipSymbol}/jettison | Jettison Cargo
 *FleetApi* | [**JumpShip**](docs/FleetApi.md#jumpship) | **Post** /my/ships/{shipSymbol}/jump | Jump Ship
 *FleetApi* | [**NavigateShip**](docs/FleetApi.md#navigateship) | **Post** /my/ships/{shipSymbol}/navigate | Navigate Ship
+*FleetApi* | [**NegotiateContract**](docs/FleetApi.md#negotiatecontract) | **Post** /my/ships/{shipSymbol}/negotiate/contract | Negotiate Contract
 *FleetApi* | [**OrbitShip**](docs/FleetApi.md#orbitship) | **Post** /my/ships/{shipSymbol}/orbit | Orbit Ship
 *FleetApi* | [**PatchShipNav**](docs/FleetApi.md#patchshipnav) | **Patch** /my/ships/{shipSymbol}/nav | Patch Ship Nav
 *FleetApi* | [**PurchaseCargo**](docs/FleetApi.md#purchasecargo) | **Post** /my/ships/{shipSymbol}/purchase | Purchase Cargo
@@ -182,6 +184,14 @@ Class | Method | HTTP request | Description
  - [GetShipCooldown200Response](docs/GetShipCooldown200Response.md)
  - [GetShipNav200Response](docs/GetShipNav200Response.md)
  - [GetShipyard200Response](docs/GetShipyard200Response.md)
+ - [GetStatus200Response](docs/GetStatus200Response.md)
+ - [GetStatus200ResponseAnnouncementsInner](docs/GetStatus200ResponseAnnouncementsInner.md)
+ - [GetStatus200ResponseLeaderboards](docs/GetStatus200ResponseLeaderboards.md)
+ - [GetStatus200ResponseLeaderboardsMostCreditsInner](docs/GetStatus200ResponseLeaderboardsMostCreditsInner.md)
+ - [GetStatus200ResponseLeaderboardsMostSubmittedChartsInner](docs/GetStatus200ResponseLeaderboardsMostSubmittedChartsInner.md)
+ - [GetStatus200ResponseLinksInner](docs/GetStatus200ResponseLinksInner.md)
+ - [GetStatus200ResponseServerResets](docs/GetStatus200ResponseServerResets.md)
+ - [GetStatus200ResponseStats](docs/GetStatus200ResponseStats.md)
  - [GetSystem200Response](docs/GetSystem200Response.md)
  - [GetSystemWaypoints200Response](docs/GetSystemWaypoints200Response.md)
  - [GetSystems200Response](docs/GetSystems200Response.md)
@@ -200,6 +210,8 @@ Class | Method | HTTP request | Description
  - [NavigateShip200Response](docs/NavigateShip200Response.md)
  - [NavigateShip200ResponseData](docs/NavigateShip200ResponseData.md)
  - [NavigateShipRequest](docs/NavigateShipRequest.md)
+ - [NegotiateContract200Response](docs/NegotiateContract200Response.md)
+ - [NegotiateContract200ResponseData](docs/NegotiateContract200ResponseData.md)
  - [OrbitShip200Response](docs/OrbitShip200Response.md)
  - [OrbitShip200ResponseData](docs/OrbitShip200ResponseData.md)
  - [PatchShipNavRequest](docs/PatchShipNavRequest.md)
